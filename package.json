@@ -6,8 +6,16 @@
   "author": "alandev2 <alanworking1@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "test:staged": "jest"
+    "prepare": "husky install",
+    "lint": "lint-staged",
+    "test": "jest --passWithNoTests",
+    "test:staged": "jest --passWithNoTests"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint 'src/**' --fix",
+      "npm run test:staged"
+    ]
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
