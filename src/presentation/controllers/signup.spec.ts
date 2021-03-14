@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Signup Controller', () => {
-  it('should return 400 if no name is provided', () => {
+  it('Should return 400 if no name is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -39,7 +39,7 @@ describe('Signup Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('name'))
   })
 
-  it('should return 400 if no email is provided', () => {
+  it('Should return 400 if no email is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -54,7 +54,7 @@ describe('Signup Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
 
-  it('should return 400 if no password is provided', () => {
+  it('Should return 400 if no password is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -69,7 +69,7 @@ describe('Signup Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
-  it('should return 400 if no passwordConfirmation is provided', () => {
+  it('Should return 400 if no passwordConfirmation is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -84,7 +84,7 @@ describe('Signup Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 
-  it('should return 400 if an  invalid email is provided', () => {
+  it('Should return 400 if an  invalid email is provided', () => {
     const { sut, emailValidatorSpy } = makeSut()
     jest.spyOn(emailValidatorSpy, 'isValid').mockReturnValueOnce(false)
     const httpRequest = {
@@ -99,5 +99,21 @@ describe('Signup Controller', () => {
 
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
+
+  it('Should call EmailValidator with correct email', () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorSpy, 'isValid')
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    sut.handle(httpRequest)
+
+    expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 })
