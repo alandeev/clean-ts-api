@@ -1,6 +1,6 @@
-export interface HttpResponse<T extends any> {
+export interface HttpResponse<T = any> {
   statusCode: number
-  body: T | any
+  body?: T
 }
 
 export interface HttpRequest {
