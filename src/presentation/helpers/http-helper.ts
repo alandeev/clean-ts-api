@@ -1,4 +1,4 @@
-import { InternalServerError } from '../errors/server-error'
+import { ServerError } from '../errors/server-error'
 import { HttpResponse } from '../protocols/http'
 
 export const badRequest = (body: Error): HttpResponse<Error> => {
@@ -18,6 +18,6 @@ export const ok = <T = any>(body: T): HttpResponse<T> => {
 export const serverError = (): HttpResponse => {
   return {
     statusCode: 500,
-    body: new InternalServerError()
+    body: new ServerError()
   }
 }
